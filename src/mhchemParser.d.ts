@@ -280,6 +280,7 @@ interface MhchemTexify {
 	go: { (input: Parsed[] | undefined, isInner?: boolean): string; };
 	_goInner: { (input: Parsed[]): string};
 	_go2: { (input: ParsedWithoutString): string };
+	_goAllowBreak: { (input: ParsedWithoutString): string | false };
 	_getArrow: { (input: ArrowName): string };
 	_getBond: { (input: BondName): string };
 	_getOperator: { (input: OperatorName): string };

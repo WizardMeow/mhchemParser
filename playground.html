@@ -1,0 +1,79 @@
+<!doctype html>
+<!--
+ **************************************************************************
+ *
+ *  mhchemParser.ts
+ *  4.2.2
+ *
+ *  Parser for the \ce command and \pu command for MathJax and Co.
+ *
+ *  mhchem's \ce is a tool for writing beautiful chemical equations easily.
+ *  mhchem's \pu is a tool for writing physical units easily.
+ *
+ *  -----------------------------------------------------------------------
+ *
+ *  Copyright 2015-2023 Martin Hensel
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *      or in file LICENSE.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  -----------------------------------------------------------------------
+ *
+ *  https://github.com/mhchem/mhchemParser
+ *
+ **************************************************************************
+-->
+<html>
+<head>
+	<meta charset="utf-8">
+	<script>
+		var exports = {};
+	</script>
+    <script>
+        MathJax = {
+            svg: {
+                displayOverflow: 'linebreak'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0-beta.7/tex-svg.js"></script>
+	<script src="../dist/mhchemParser.js"></script>
+</head>
+<body>
+	<h1>mhchem Parser – Playground</h1>
+    <div>
+        <textarea id="textarea">Hg^2+ ->[I-] HgI2 ->[I-] [Hg^{II}I4]^2-</textarea>
+        <button id="button">click</button>
+    </div>
+	<div id="output"><span style="color: red">Could not load parser. This is likely a CORS restriction, e.g. if you opened this document via file://.</span></div>
+	<script>
+        const output = document.getElementById('output');
+        const textarea = document.getElementById('textarea');
+        const button = document.getElementById('button');
+        
+        output.innerHTML = '';
+        const raw = document.createElement('div');
+        output.appendChild(raw);
+        const svg = document.createElement('div');
+        output.appendChild(svg); 
+
+        button.onclick = () => {
+            const text = textarea.value;
+            const tex = mhchemParser.toTex(text);
+            raw.innerHTML = '\\(' + tex + '\\)';
+            svg.innerHTML = '\\(' + tex + '\\)';
+            MathJax.typesetPromise([svg])
+        }
+	</script>
+</body>
+</html>

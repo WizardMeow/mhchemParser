@@ -34,7 +34,7 @@
  */
 export class mhchemParser {
     static toTex(input, type) {
-        return _mhchemTexify.go(_mhchemParser.go(input, type), type !== "tex");
+        return _mhchemTexify.go(_mhchemParser.go(input, type), false);
     }
 }
 function _mhchemCreateTransitions(o) {
@@ -1433,7 +1433,14 @@ const _mhchemTexify = {
                 res += inputi;
             }
             else {
+                const allowBreak = _mhchemTexify._goAllowBreak(inputi);
+                if (allowBreak !== false && !/\\allowbreak$/.test(res)) {
+                    res += allowBreak;
+                }
                 res += _mhchemTexify._go2(inputi);
+                if (allowBreak !== false) {
+                    res += allowBreak;
+                }
                 if (inputi.type_ === '1st-level escape') {
                     cee = true;
                 }
@@ -1684,6 +1691,18 @@ const _mhchemTexify = {
             default:
                 assertNever(buf);
                 throw ["MhchemBugT", "mhchem bug T. Please report."];
+        }
+        return res;
+    },
+    _goAllowBreak: function (buf) {
+        let res;
+        switch (buf.type_) {
+            case 'arrow':
+            case 'operator':
+                res = '\\allowbreak';
+                break;
+            default:
+                res = false;
         }
         return res;
     },

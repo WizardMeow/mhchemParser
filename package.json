@@ -8,5 +8,10 @@
     "repository": "github:mhchem/mhchemParser",
     "license": "Apache-2.0",
     "author": "Martin Hensel",
-    "main": "dist/mhchemParser.js"
+    "main": "dist/mhchemParser.js",
+    "scripts": {
+        "build": "npm run build:cjs && npm run build:esm",
+        "build:cjs": "tsc -p ./tsconfig.json --outDir ./dist",
+        "build:esm": "tsc -p ./tsconfig-es6.json --outDir ./esm"
+    }
 }
